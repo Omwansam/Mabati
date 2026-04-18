@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Seo } from '../components/seo/Seo.jsx'
 import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '../data/site.js'
+import { getWhatsAppUrl } from '../utils/whatsappUrl.js'
 import { Button } from '../components/ui/Button.jsx'
 
 export function ContactPage() {
@@ -8,7 +9,7 @@ export function ContactPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <Seo
         title="Contact"
-        description="Email, phone, and hours for Mabati Yetu. Request a quote online or call our team."
+        description="Phone, WhatsApp, and hours for Ruiru Mabati. Request a quote via WhatsApp or call our team."
         path="/contact"
       />
       <nav className="text-sm text-slate-500">
@@ -35,10 +36,10 @@ export function ContactPage() {
           </dt>
           <dd className="mt-1">
             <a
-              href="mailto:sales@mabatiyetu.example"
+              href="mailto:sales@ruirufactorymabati.com"
               className="text-slate-900 hover:text-amber-700"
             >
-              sales@mabatiyetu.example
+              sales@ruirufactorymabati.com
             </a>
           </dd>
         </div>
@@ -52,6 +53,23 @@ export function ContactPage() {
               className="text-slate-900 hover:text-amber-700"
             >
               {SITE_PHONE_DISPLAY}
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt className="text-sm font-semibold uppercase tracking-wide text-amber-800">
+            WhatsApp
+          </dt>
+          <dd className="mt-1">
+            <a
+              href={getWhatsAppUrl(
+                'Hello, I am reaching out from the Ruiru Mabati website contact page.',
+              )}
+              className="text-slate-900 hover:text-amber-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Chat on WhatsApp
             </a>
           </dd>
         </div>
@@ -72,8 +90,8 @@ export function ContactPage() {
       </dl>
 
       <p className="mt-8 text-sm text-slate-500">
-        Prefer a structured request? Build a quote in the shop and submit it
-        from the quote page.
+        Prefer a list first? Add products in the shop, then open the quote page
+        to send everything on WhatsApp in one message.
       </p>
       <Button as={Link} to="/quote" variant="secondary" className="mt-4">
         Open quote

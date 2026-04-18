@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { formatProductPrice } from '../../utils/formatPrice.js'
+import { productImageUrl } from '../../utils/productImageUrl.js'
 
 export function ProductCard({ product }) {
   const { name, image, slug, category, unit } = product
+  const imgSrc = productImageUrl(image)
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:border-amber-200 hover:shadow-md">
       <Link
@@ -10,7 +12,7 @@ export function ProductCard({ product }) {
         className="relative aspect-[4/3] overflow-hidden bg-slate-100"
       >
         <img
-          src={image}
+          src={imgSrc}
           alt={name}
           className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           loading="lazy"

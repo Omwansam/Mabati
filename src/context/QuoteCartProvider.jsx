@@ -96,7 +96,7 @@ export function QuoteCartProvider({ children }) {
   )
 
   const subtotal = useMemo(
-    () => items.reduce((sum, l) => sum + l.price * l.quantity, 0),
+    () => items.reduce((sum, l) => sum + (l.price ?? 0) * l.quantity, 0),
     [items],
   )
 

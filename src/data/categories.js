@@ -6,41 +6,34 @@ export const categories = [
     slug: 'corrugated-sheets',
     name: 'Corrugated & box profiles',
     description:
-      'S-Max corrugated, Boxmax box-rib, and crimped architectural sheets — gauge and colour to spec.',
-    image:
-      'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80',
+      'Corrugated, box profile, Aluzin, and crimped sheets — fixed list prices per metre where shown.',
+    image: '/images/products/Corrugated%20Mabati%20ksh%20420.jpeg',
   },
   {
     slug: 'roofing-tiles',
-    name: 'Stone-coated tiles',
+    name: 'Roofs & tile profiles',
     description:
-      'Brickmax, Romax, Z-Max, Euromax and similar profiles — factory-finished for long service life.',
-    image:
-      'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=800&q=80',
+      'Brixmax, Romax, Euromax, Z max, Kilplok, classic and Milano-style lines, plus shingles.',
+    image: '/images/products/Brixmax%20Mabati%20ksh%20570.jpeg',
   },
   {
-    slug: 'gutters-accessories',
-    name: 'Accessories & daylighting',
-    description:
-      'Ridges, valleys, rolltop, translucent sheets, and PVC fascia — everything that completes the roof line.',
-    image:
-      'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&q=80',
+    slug: 'fencing',
+    name: 'Fencing',
+    description: 'Chainlink and twisted fence products — firm pricing on WhatsApp where needed.',
+    image: '/images/products/Chainlink.jpeg',
   },
   {
-    slug: 'insulation',
-    name: 'Roof insulation',
+    slug: 'building-materials',
+    name: 'Building materials',
     description:
-      'Foil and blanket systems to cut heat gain and improve indoor comfort.',
-    image:
-      'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80',
+      'PVC fascia, BRC mesh, light gauge steel, and cut & bend reinforcement — quotes on request.',
+    image: '/images/products/Pvc%20fascia%20board%20ksh%202%2C000.jpeg',
   },
   {
-    slug: 'fasteners',
-    name: 'Fasteners & nails',
-    description:
-      'Self-drilling screws, washers, coloured nails, and roofing nails — matched to your sheet system.',
-    image:
-      'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&q=80',
+    slug: 'services',
+    name: 'Installation & services',
+    description: 'Roof installation and on-site support — confirm scope and price before work.',
+    image: '/images/products/Roof%20Instalation%20ksh%2013%2C000.jpeg',
   },
 ]
 

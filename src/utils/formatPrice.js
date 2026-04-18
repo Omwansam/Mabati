@@ -9,9 +9,12 @@ export function formatPrice(amount) {
 }
 
 /**
- * @param {{ price: number, priceMax?: number }} product
+ * @param {{ price: number | null, priceMax?: number }} product
  */
 export function formatProductPrice(product) {
+  if (product.price == null) {
+    return 'Price on request'
+  }
   const max = product.priceMax
   if (max != null && max > product.price) {
     return `${formatPrice(product.price)} – ${formatPrice(max)}`

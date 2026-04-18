@@ -7,7 +7,7 @@ export function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <Seo
         title="About us"
-        description="Learn how Mabati Yetu supplies corrugated sheets, tiles, gutters, and fixings for East African projects."
+        description="Ruiru Mabati supplies roofing sheets, tile profiles, fencing, fascia, and installation from Ruiru with delivery across Kenya."
         path="/about"
       />
       <nav className="text-sm text-slate-500">
@@ -21,34 +21,25 @@ export function AboutPage() {
       </nav>
 
       <h1 className="mt-6 text-3xl font-bold text-slate-900 sm:text-4xl">
-        About Mabati Yetu Factory
+        About Ruiru Mabati
       </h1>
       <p className="mt-4 text-lg text-slate-600">
-        Factory-direct roofing materials — from corrugated and box profiles to
-        stone-coated lines, insulation, and accessories — structured like the
-        public{' '}
-        <a
-          href="https://www.mabatiyetu.co.ke/product-category/roofing-materials/"
-          className="font-medium text-amber-800 underline decoration-amber-300 hover:text-amber-950"
-          target="_blank"
-          rel="noreferrer"
-        >
-          roofing materials
-        </a>{' '}
-        catalogue.
+        We are a Ruiru-based roofing supplier focused on clear pricing and real
+        product photography. From corrugated and box profiles to stone-coated
+        lines, fencing, fascia, reinforcement mesh, and installation — browse the
+        site, build a list, and send it on WhatsApp for stock and delivery.
       </p>
 
       <div className="mt-10 space-y-6 leading-relaxed text-slate-700">
         <p>
-          We help you match profile, gauge, colour, and budget — whether you are
-          roofing a home, warehouse, or farm structure. Delivery and flexible
-          payment options are discussed when you request a quote.
+          We help you match profile, colour, and budget — whether you are roofing
+          a home, warehouse, or farm structure. Delivery and flexible payment
+          options are discussed when you message us.
         </p>
         <p>
-          Our team can advise on overlap, screw spacing, and compatible ridges
-          and valleys. Use the online catalogue to shortlist products, add them
-          to your quote, and send us your list — we will follow up with stock
-          checks and delivery options.
+          Use the catalogue to shortlist products, add them to your quote, and open
+          WhatsApp with your full list — we follow up with availability and
+          delivery options.
         </p>
       </div>
 

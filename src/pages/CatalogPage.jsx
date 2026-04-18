@@ -115,8 +115,8 @@ export function CatalogPage() {
 
   const seoTitle = meta ? meta.name : 'Shop'
   const seoDescription = meta
-    ? `${meta.description} Filter, sort, and request a quote on Mabati Yetu.`
-    : 'Roofing materials: corrugated and box profiles, stone-coated tiles, insulation, accessories, and fasteners. Filter, search, and sort like a factory catalogue.'
+    ? `${meta.description} Filter, sort, and request a quote on Ruiru Mabati.`
+      : 'Ruiru Mabati: corrugated and box profiles, tile lines, fencing, fascia, mesh, and more. Real photos, fixed list prices — filter, search, and sort the catalogue.'
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">

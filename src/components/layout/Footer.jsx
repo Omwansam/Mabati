@@ -1,5 +1,10 @@
 import { Link } from 'react-router-dom'
-import { SITE_BRAND, SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '../../data/site.js'
+import {
+  SITE_BRAND,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+  SITE_WEBSITE_URL,
+} from '../../data/site.js'
 
 export function Footer() {
   return (
@@ -9,16 +14,16 @@ export function Footer() {
           <div className="lg:col-span-2">
             <p className="text-lg font-bold text-white">{SITE_BRAND}</p>
             <p className="mt-3 max-w-md text-sm leading-relaxed">
-              Roofing sheets, stone-coated tiles, insulation, ridges, valleys, and
-              fixings — factory supply with delivery options countrywide. Inspired
-              by the product range on{' '}
+              Roofing sheets, tile profiles, fencing, fascia, mesh, and
+              installation — Ruiru-based supply with delivery options countrywide.
+              See the live site at{' '}
               <a
-                href="https://www.mabatiyetu.co.ke/product-category/roofing-materials/"
+                href={SITE_WEBSITE_URL}
                 className="text-amber-400 underline decoration-amber-400/40 hover:text-amber-300"
                 target="_blank"
                 rel="noreferrer"
               >
-                mabatiyetu.co.ke
+                ruirufactorymabati.com
               </a>
               .
             </p>
@@ -93,7 +98,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.mabatiyetu.co.ke/"
+                  href={SITE_WEBSITE_URL}
                   className="hover:text-amber-400 focus:outline-none focus-visible:text-amber-400"
                   target="_blank"
                   rel="noreferrer"
@@ -103,13 +108,14 @@ export function Footer() {
               </li>
             </ul>
             <p className="mt-4 text-xs text-slate-500">
-              Terms, privacy, and payment policies: see the main website.
+              Terms, privacy, and payment policies: confirm on the official site
+              or WhatsApp.
             </p>
           </div>
         </div>
         <div className="mt-10 border-t border-slate-700 pt-8 text-center text-xs text-slate-500">
-          © {new Date().getFullYear()} {SITE_BRAND}. Demo app — prices indicative;
-          confirm with sales.
+          © {new Date().getFullYear()} {SITE_BRAND}. Prices as listed on the site;
+          delivery and extras confirmed on WhatsApp or call.
         </div>
       </div>
     </footer>

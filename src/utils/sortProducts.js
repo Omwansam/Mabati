@@ -6,9 +6,19 @@ export function sortProducts(list, sortKey) {
   const copy = [...list]
   switch (sortKey) {
     case 'price-asc':
-      return copy.sort((a, b) => a.price - b.price)
+      return copy.sort((a, b) => {
+        const ap = a.price ?? Number.POSITIVE_INFINITY
+        const bp = b.price ?? Number.POSITIVE_INFINITY
+        if (ap !== bp) return ap - bp
+        return a.name.localeCompare(b.name)
+      })
     case 'price-desc':
-      return copy.sort((a, b) => b.price - a.price)
+      return copy.sort((a, b) => {
+        const ap = a.price ?? Number.NEGATIVE_INFINITY
+        const bp = b.price ?? Number.NEGATIVE_INFINITY
+        if (bp !== ap) return bp - ap
+        return a.name.localeCompare(b.name)
+      })
     case 'name':
       return copy.sort((a, b) => a.name.localeCompare(b.name))
     case 'popularity':

@@ -1,14 +1,33 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Seo } from '../components/seo/Seo.jsx'
-import { QUOTE_PRODUCT_TYPES } from '../data/site.js'
+import { SITE_BRAND } from '../data/site.js'
 import { useQuoteCart } from '../hooks/useQuoteCart.js'
-import { submitQuoteRequest } from '../services/submitQuoteRequest.js'
 import { formatPrice, formatProductPrice } from '../utils/formatPrice.js'
+import { productImageUrl } from '../utils/productImageUrl.js'
+import { getWhatsAppUrl } from '../utils/whatsappUrl.js'
 import { Button } from '../components/ui/Button.jsx'
-import { Input } from '../components/ui/Input.jsx'
-import { Select } from '../components/ui/Select.jsx'
 import { Textarea } from '../components/ui/Textarea.jsx'
+
+function buildQuoteWhatsAppMessage(items, notes, subtotal, hasUnpriced) {
+  const lines = items.map((l) => {
+    const unit = l.unit ? ` (${l.unit})` : ''
+    const price =
+      l.price != null
+        ? ` — ${formatPrice(l.price)} each`
+        : ' — price on request'
+    return `• ${l.quantity}× ${l.name}${price}${unit}`
+  })
+  let msg = `Hello ${SITE_BRAND},\n\nPlease quote the following:\n\n${lines.join('\n')}`
+  if (notes.trim()) msg += `\n\nNotes: ${notes.trim()}`
+  if (hasUnpriced) {
+    msg += `\n\nSubtotal (priced lines only): ${formatPrice(subtotal)}`
+    msg += '\nPlease confirm prices for any “price on request” lines.'
+  } else {
+    msg += `\n\nLine total (listed prices × qty): ${formatPrice(subtotal)}`
+  }
+  return msg
+}
 
 export function QuotePage() {
   const {
@@ -19,111 +38,41 @@ export function QuotePage() {
     subtotal,
     totalQuantity,
   } = useQuoteCart()
-  const [submitted, setSubmitted] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState(/** @type {string | null} */ (null))
-  const [errors, setErrors] = useState(
-    /** @type {Record<string, string>} */ ({}),
+  const [notes, setNotes] = useState('')
+
+  const hasUnpriced = useMemo(
+    () => items.some((l) => l.price == null),
+    [items],
   )
 
-  async function handleSubmit(e) {
-    e.preventDefault()
-    const form = e.target
-    if (!(form instanceof HTMLFormElement)) return
-    const fd = new FormData(form)
-    const name = String(fd.get('name') ?? '').trim()
-    const email = String(fd.get('email') ?? '').trim()
-    const phone = String(fd.get('phone') ?? '').trim()
-    const productType = String(fd.get('productType') ?? '').trim()
-    const deliveryAddress = String(fd.get('deliveryAddress') ?? '').trim()
-    const materials = String(fd.get('materials') ?? '').trim()
-    const message = String(fd.get('message') ?? '').trim()
-    const nextErrors = /** @type {Record<string, string>} */ ({})
-    if (!name) nextErrors.name = 'Enter your name'
-    if (!email) nextErrors.email = 'Enter your email'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      nextErrors.email = 'Enter a valid email'
-    if (!phone) nextErrors.phone = 'Enter a phone number'
-    if (!productType) nextErrors.productType = 'Choose a product type'
-    if (!deliveryAddress) nextErrors.deliveryAddress = 'Enter delivery address'
-    setErrors(nextErrors)
-    if (Object.keys(nextErrors).length > 0) return
-
-    setSubmitting(true)
-    setSubmitError(null)
-    try {
-      await submitQuoteRequest({
-        customer: {
-          name,
-          email,
-          phone,
-          productType,
-          deliveryAddress,
-          materials,
-          message,
-        },
-        lines: items.map((l) => ({
-          productId: l.productId,
-          slug: l.slug,
-          name: l.name,
-          price: l.price,
-          priceMax: l.priceMax,
-          quantity: l.quantity,
-          unit: l.unit,
-        })),
-        subtotal,
-      })
-      setSubmitted(true)
-      clearQuote()
-      form.reset()
-    } catch (err) {
-      setSubmitError(
-        err instanceof Error ? err.message : 'Could not send your quote.',
-      )
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  if (items.length === 0 && submitted) {
-    return (
-      <div className="mx-auto max-w-lg px-4 py-16 text-center sm:px-6 lg:px-8">
-        <Seo
-          title="Quote sent"
-          description="Your quote request was submitted to Mabati Yetu."
-          path="/quote"
-        />
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-10">
-          <p className="text-lg font-semibold text-amber-950">
-            Quote request sent
-          </p>
-          <p className="mt-2 text-slate-700">
-            Thank you. We will contact you shortly to confirm availability,
-            quantities, and delivery.
-          </p>
-          <Button as={Link} to="/catalog" variant="primary" className="mt-8">
-            Continue shopping
-          </Button>
-        </div>
-      </div>
+  const waHref = useMemo(() => {
+    if (items.length === 0) return getWhatsAppUrl('')
+    return getWhatsAppUrl(
+      buildQuoteWhatsAppMessage(items, notes, subtotal, hasUnpriced),
     )
-  }
+  }, [items, notes, subtotal, hasUnpriced])
 
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center sm:px-6 lg:px-8">
         <Seo
           title="Quote"
-          description="Review your roofing materials list and send a quote request to Mabati Yetu."
+          description="Build your list on Ruiru Mabati and send it on WhatsApp for pricing and delivery."
           path="/quote"
         />
         <h1 className="text-2xl font-bold text-slate-900">Your quote is empty</h1>
         <p className="mt-2 text-slate-600">
-          Add products from the catalogue, then return here to send us your list.
+          Add products from the catalogue, then return here to send your list on
+          WhatsApp.
         </p>
-        <Button as={Link} to="/catalog" variant="primary" className="mt-8" size="lg">
-          Browse products
-        </Button>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Button as={Link} to="/catalog" variant="primary" size="lg">
+            Browse products
+          </Button>
+          <Button as="a" href={waHref} variant="outline" size="lg">
+            Message on WhatsApp
+          </Button>
+        </div>
       </div>
     )
   }
@@ -132,7 +81,7 @@ export function QuotePage() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <Seo
         title="Request a quote"
-        description="Send your Mabati Yetu product list and contact details for pricing and delivery."
+        description="Review your list and send it to Ruiru Mabati on WhatsApp."
         path="/quote"
       />
       <nav className="text-sm text-slate-500">
@@ -149,9 +98,18 @@ export function QuotePage() {
         Request a quote
       </h1>
       <p className="mt-2 text-slate-600">
-        {totalQuantity} item{totalQuantity === 1 ? '' : 's'} in your list ·
-        indicative subtotal {formatPrice(subtotal)} (using each line’s “from”
-        price)
+        {totalQuantity} item{totalQuantity === 1 ? '' : 's'} in your list
+        {hasUnpriced ? (
+          <>
+            {' '}
+            · subtotal {formatPrice(subtotal)} (priced lines only)
+          </>
+        ) : (
+          <>
+            {' '}
+            · total {formatPrice(subtotal)}
+          </>
+        )}
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-5 lg:gap-12">
@@ -168,7 +126,7 @@ export function QuotePage() {
                   className="flex shrink-0 gap-4 sm:items-center"
                 >
                   <img
-                    src={line.image}
+                    src={productImageUrl(line.image)}
                     alt={line.name}
                     className="h-20 w-20 rounded-lg object-cover"
                   />
@@ -178,7 +136,7 @@ export function QuotePage() {
                     </p>
                     <p className="text-sm text-slate-500">
                       {formatProductPrice(line)}
-                      {line.unit ? ` ${line.unit}` : ''}
+                      {line.unit ? ` · ${line.unit}` : ''}
                     </p>
                   </div>
                 </Link>
@@ -201,7 +159,9 @@ export function QuotePage() {
                     />
                   </label>
                   <p className="min-w-[6rem] text-right font-semibold text-slate-900">
-                    {formatPrice(line.price * line.quantity)}
+                    {line.price != null
+                      ? formatPrice(line.price * line.quantity)
+                      : '—'}
                   </p>
                   <button
                     type="button"
@@ -226,92 +186,33 @@ export function QuotePage() {
         <section className="lg:col-span-2">
           <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-slate-900">
-              Your details
+              Send on WhatsApp
             </h2>
             <p className="mt-1 text-sm text-slate-600">
-              Set <code className="rounded bg-slate-100 px-1 text-xs">VITE_QUOTE_API_URL</code>{' '}
-              to POST JSON to your API; otherwise submissions run in demo mode
-              (console log in dev).
+              Your list and notes open in WhatsApp so we can reply with stock,
+              delivery, and any adjustments.
             </p>
-            <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
-              <Input
-                label="Full name"
-                name="name"
-                autoComplete="name"
-                required
-                error={errors.name}
-              />
-              <Input
-                label="Email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                error={errors.email}
-              />
-              <Input
-                label="Phone"
-                name="phone"
-                type="tel"
-                autoComplete="tel"
-                required
-                error={errors.phone}
-              />
-              <Select
-                label="Type of product"
-                name="productType"
-                required
-                defaultValue=""
-                error={errors.productType}
-              >
-                {QUOTE_PRODUCT_TYPES.map((opt) => (
-                  <option key={opt.value || 'empty'} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </Select>
+            <div className="mt-6 space-y-4">
               <Textarea
-                label="List materials / quantities (optional)"
-                name="materials"
-                rows={3}
-                placeholder="e.g. S-Max charcoal 30 m, ridge caps 12 m…"
-              />
-              <Input
-                label="Delivery address"
-                name="deliveryAddress"
-                autoComplete="street-address"
-                required
-                error={errors.deliveryAddress}
-                placeholder="County, town, landmark or site access notes"
-              />
-              <Textarea
-                label="Other notes (optional)"
-                name="message"
-                placeholder="Roof size, colour preferences, timeline…"
+                label="Extra details (optional)"
+                name="quote-notes"
+                rows={4}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Delivery location, roof size, colour, timeline…"
               />
               <div className="border-t border-slate-100 pt-4">
                 <div className="flex justify-between text-sm text-slate-600">
-                  <span>Indicative subtotal</span>
+                  <span>{hasUnpriced ? 'Subtotal (priced lines)' : 'Total'}</span>
                   <span className="font-semibold text-slate-900">
                     {formatPrice(subtotal)}
                   </span>
                 </div>
               </div>
-              {submitError ? (
-                <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800" role="alert">
-                  {submitError}
-                </p>
-              ) : null}
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full"
-                disabled={submitting}
-              >
-                {submitting ? 'Sending…' : 'Submit quote request'}
+              <Button as="a" href={waHref} variant="primary" size="lg" className="w-full">
+                Open WhatsApp with this quote
               </Button>
-            </form>
+            </div>
           </div>
         </section>
       </div>

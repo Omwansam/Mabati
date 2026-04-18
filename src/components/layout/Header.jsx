@@ -6,7 +6,12 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom'
-import { SITE_PHONE_DISPLAY, SITE_PHONE_E164 } from '../../data/site.js'
+import {
+  SITE_BRAND,
+  SITE_LOGO_MARK,
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_E164,
+} from '../../data/site.js'
 import { useQuoteCart } from '../../hooks/useQuoteCart.js'
 
 const navLinkClass = ({ isActive }) =>
@@ -101,12 +106,14 @@ export function Header() {
           onClick={() => setOpen(false)}
         >
           <span
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-600 text-sm font-extrabold text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-600 text-sm font-extrabold text-white"
             aria-hidden
           >
-            MY
+            {SITE_LOGO_MARK}
           </span>
-          <span className="hidden sm:inline">Mabati Yetu</span>
+          <span className="max-w-[11rem] truncate text-base font-bold sm:max-w-none sm:text-lg">
+            {SITE_BRAND}
+          </span>
         </Link>
 
         <SiteSearch />

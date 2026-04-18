@@ -5,6 +5,7 @@ import { getCategoryBySlug } from '../data/categories.js'
 import { useQuoteCart } from '../hooks/useQuoteCart.js'
 import { useProducts } from '../hooks/useProducts.js'
 import { formatProductPrice } from '../utils/formatPrice.js'
+import { productImageUrl } from '../utils/productImageUrl.js'
 import { Button } from '../components/ui/Button.jsx'
 import { Input } from '../components/ui/Input.jsx'
 import { ProductCard } from '../components/product/ProductCard.jsx'
@@ -39,7 +40,7 @@ export function ProductDetailPage() {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <Seo
           title="Product unavailable"
-          description="We could not load this product. Return to the Mabati Yetu shop."
+          description="We could not load this product. Return to the Ruiru Mabati shop."
           path="/catalog"
         />
         <div
@@ -80,7 +81,7 @@ export function ProductDetailPage() {
       <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8">
         <Seo
           title="Product not found"
-          description="This product is not in the Mabati Yetu catalogue."
+          description="This product is not in the Ruiru Mabati catalogue."
           path={slug ? `/product/${slug}` : '/catalog'}
           noindex
         />
@@ -107,7 +108,7 @@ export function ProductDetailPage() {
         title={product.name}
         description={metaDescription}
         path={`/product/${product.slug}`}
-        ogImage={product.image}
+        ogImage={productImageUrl(product.image)}
       />
       <nav className="text-sm text-slate-500">
         <Link to="/" className="hover:text-amber-700">
@@ -141,7 +142,7 @@ export function ProductDetailPage() {
       <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-12">
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <img
-            src={product.image}
+            src={productImageUrl(product.image)}
             alt={product.name}
             className="aspect-square w-full object-cover"
           />
@@ -164,8 +165,9 @@ export function ProductDetailPage() {
             ) : null}
           </p>
           <p className="mt-2 text-sm text-slate-500">
-            Indicative range — final price depends on gauge, colour, length, and
-            current mill list. We confirm on quote.
+            {product.price != null
+              ? 'Listed price is fixed as shown. Delivery and extras are confirmed when you message us.'
+              : 'Ask on WhatsApp for a firm price and availability for this item.'}
           </p>
           <p className="mt-6 text-slate-600 leading-relaxed">
             {product.description}
