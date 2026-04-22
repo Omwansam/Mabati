@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom'
 import {
   SITE_BRAND,
-  SITE_LOGO_MARK,
   SITE_PHONE_DISPLAY,
   SITE_PHONE_E164,
 } from '../../data/site.js'
@@ -105,12 +104,12 @@ export function Header() {
           className="flex shrink-0 items-center gap-2 text-lg font-bold tracking-tight text-slate-900"
           onClick={() => setOpen(false)}
         >
-          <span
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-600 text-sm font-extrabold text-white"
-            aria-hidden
-          >
-            {SITE_LOGO_MARK}
-          </span>
+          <img
+            src="/images/LogoRMF.jpeg"
+            alt={`${SITE_BRAND} logo`}
+            className="h-10 w-10 shrink-0 rounded object-cover"
+            loading="eager"
+          />
           <span className="max-w-[11rem] truncate text-base font-bold sm:max-w-none sm:text-lg">
             {SITE_BRAND}
           </span>
