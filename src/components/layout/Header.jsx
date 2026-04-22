@@ -7,7 +7,6 @@ import {
   useSearchParams,
 } from 'react-router-dom'
 import {
-  SITE_BRAND,
   SITE_PHONE_DISPLAY,
   SITE_PHONE_E164,
 } from '../../data/site.js'
@@ -101,18 +100,15 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 sm:px-6 lg:px-8">
         <Link
           to="/"
-          className="flex shrink-0 items-center gap-2 text-lg font-bold tracking-tight text-slate-900"
+          className="flex shrink-0 items-center text-slate-900"
           onClick={() => setOpen(false)}
         >
           <img
             src="/images/LogoRMF.jpeg"
-            alt={`${SITE_BRAND} logo`}
-            className="h-10 w-10 shrink-0 rounded object-cover"
+            alt="Ruiru Mabati logo"
+            className="h-16 w-16 shrink-0 rounded object-cover sm:h-20 sm:w-20"
             loading="eager"
           />
-          <span className="max-w-[11rem] truncate text-base font-bold sm:max-w-none sm:text-lg">
-            {SITE_BRAND}
-          </span>
         </Link>
 
         <SiteSearch />
