@@ -9,6 +9,7 @@ import {
 } from '../data/site.js'
 import { useProducts } from '../hooks/useProducts.js'
 import { productImageUrl } from '../utils/productImageUrl.js'
+import { formatProductPrice } from '../utils/formatPrice.js'
 import { ProductCard } from '../components/product/ProductCard.jsx'
 import { ProductGridSkeleton } from '../components/catalog/ProductGridSkeleton.jsx'
 import { Button } from '../components/ui/Button.jsx'
@@ -87,7 +88,7 @@ export function HomePage() {
             </h2>
             <p className="mx-auto mt-2 max-w-2xl text-slate-600">
               Every shot below is from our yard range — tap any tile to open the
-              product page, price, and quote list.
+              product page and quote list.
             </p>
           </div>
           {error ? (
@@ -116,9 +117,14 @@ export function HomePage() {
                         loading="lazy"
                       />
                     </div>
-                    <p className="line-clamp-2 px-2 py-2 text-center text-xs font-medium text-slate-800 group-hover:text-amber-900 sm:text-sm">
-                      {p.name}
-                    </p>
+                    <div className="px-2 py-2 text-center">
+                      <p className="line-clamp-2 text-xs font-medium text-slate-800 group-hover:text-amber-900 sm:text-sm">
+                        {p.name}
+                      </p>
+                      <p className="mt-1 text-xs font-semibold text-amber-700 sm:text-sm">
+                        {formatProductPrice(p)}
+                      </p>
+                    </div>
                   </Link>
                 </li>
               ))}
