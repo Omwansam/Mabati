@@ -15,9 +15,9 @@ export const SITE_PRODUCT_FALLBACK_IMAGE =
 export const DEFAULT_SEO_DESCRIPTION =
   'Ruiru Mabati — roofing sheets, tile profiles, fencing, fascia, mesh, and installation. Real product photos, fixed list prices, and WhatsApp quotes with delivery across Kenya.'
 
-export const SITE_PHONE_E164 = '+254785768590'
-export const SITE_PHONE_DISPLAY = '0785 768 590'
-export const SITE_WHATSAPP = '254785768590'
+export const SITE_PHONE_E164 = '+254102382692'
+export const SITE_PHONE_DISPLAY = '0102 382 692'
+export const SITE_WHATSAPP = '254102382692'
 
 export const PROMO_ITEMS = [
   { label: 'Free delivery countrywide', highlight: true },
