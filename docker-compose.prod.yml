@@ -1,12 +1,48 @@
+# Mabati — production stack.
+#
+# This site does NOT own ports 80/443. The shared FIBI edge proxy (fibi-proxy-1,
+# /opt/fibi/FIBI) already binds them on this host and fronts several tenants;
+# publishing them here would simply fail to bind. Instead this container joins
+# that proxy's network and is reached over it, with TLS terminated at the edge.
+#
+# Routing lives with the proxy, not here: deploy/vhosts/*.conf in this repo is
+# bind mounted into fibi-proxy-1 read-only.
+
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: mabati-yetu-web
+    image: mabati-web:latest
+    container_name: mabati_web
     restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+    # No `ports:`. See the note above — the edge proxy owns 80/443, and this
+    # container is addressed on the internal network only.
+    networks:
+      fibi_internal:
+        aliases:
+          # Unique by construction. Docker's embedded DNS answers a name with
+          # EVERY container carrying it, and four stacks share this network —
+          # `web` is already taken by infora_web, so a bare service name here
+          # would silently round-robin between two unrelated applications.
+          - mabati-web
+    healthcheck:
+      # The nginx image ships no HEALTHCHECK, so "running" would otherwise mean
+      # "the process started", not "it is answering".
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  # Created by the FIBI stack; this project attaches to it and never owns it.
+  fibi_internal:
+    external: true
